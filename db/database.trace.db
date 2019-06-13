@@ -207,3 +207,9 @@ ALTER TABLE PAYMENTS.PAYMENTS add primary key (ticket) [90017-199]
 	at org.h2.server.web.WebThread.process(WebThread.java:173)
 	at org.h2.server.web.WebThread.run(WebThread.java:93)
 	at java.base/java.lang.Thread.run(Thread.java:835)
+2019-06-13 00:40:29 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO PAYMENTS (TICKET, CLIENT_ID, STATUS, BUYER_NAME, BUYER_EMAIL, BUYER_CPF, AMOUNT, TYPE, BOLETO_NUM, CARD_HOLDER, CARD_NUMBER, CARD_EXPIRATION) VALUES (?, ?, ?, ?, ?,?, ?, ?, ?, ?, ??[*]) "; expected "[, ::, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+insert into payments (ticket, client_id, status, buyer_name, buyer_email, buyer_cpf, amount, type, boleto_num, card_holder, card_number, card_expiration) values (?, ?, ?, ?, ?,?, ?, ?, ?, ?, ??) [42001-199]
+2019-06-13 00:41:36 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column """BUYER_CPF"" VARCHAR(11) NOT NULL": "'081.356.740-82' (14)"; SQL statement:
+insert into payments (ticket, client_id, status, buyer_name, buyer_email, buyer_cpf, amount, type, boleto_num, card_holder, card_number, card_expiration) values (?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?) [22001-199]

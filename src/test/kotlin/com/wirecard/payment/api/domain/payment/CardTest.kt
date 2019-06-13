@@ -2,9 +2,9 @@ package com.wirecard.payment.api.domain.payment
 
 import com.wirecard.payment.api.domain.exceptions.ValidationException
 import com.wirecard.payment.api.domain.exceptions.Violation
+import com.wirecard.payment.api.infrastructure.format
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import java.text.SimpleDateFormat
 
 class CardTest {
 
@@ -20,7 +20,7 @@ class CardTest {
         assertEquals("Mateus Missaci", card.holderName)
         assertEquals("5488 2607 0588 0201", card.number)
         assertEquals("10/20", card.expirationDate.value)
-        assertEquals("31/10/2020", SimpleDateFormat("dd/MM/yyyy").format(card.expirationDate.toDate()))
+        assertEquals("31/10/2020", card.expirationDate.toDate().format("dd/MM/yyyy"))
         assertEquals("355", card.cvv)
     }
 
@@ -42,7 +42,7 @@ class CardTest {
             assertEquals("Mateus Missaci", card.holderName)
             assertEquals(cardNumber, card.number)
             assertEquals("10/20", card.expirationDate.value)
-            assertEquals("31/10/2020", SimpleDateFormat("dd/MM/yyyy").format(card.expirationDate.toDate()))
+            assertEquals("31/10/2020", card.expirationDate.toDate().format("dd/MM/yyyy"))
             assertEquals("355", card.cvv)
 
         }
@@ -116,7 +116,7 @@ class CardTest {
             assertEquals("Mateus Missaci", card.holderName)
             assertEquals("5488 2607 0588 0201", card.number)
             assertEquals(date, card.expirationDate.value)
-            assertEquals("30/09/2020", SimpleDateFormat("dd/MM/yyyy").format(card.expirationDate.toDate()))
+            assertEquals("30/09/2020", card.expirationDate.toDate().format("dd/MM/yyyy"))
             assertEquals("355", card.cvv)
 
         }
@@ -162,7 +162,7 @@ class CardTest {
             assertEquals("Mateus Missaci", card.holderName)
             assertEquals("5488 2607 0588 0201", card.number)
             assertEquals("10/20", card.expirationDate.value)
-            assertEquals("31/10/2020", SimpleDateFormat("dd/MM/yyyy").format(card.expirationDate.toDate()))
+            assertEquals("31/10/2020", card.expirationDate.toDate().format("dd/MM/yyyy"))
             assertEquals(cvv, card.cvv)
 
         }
@@ -207,7 +207,7 @@ class CardTest {
     }
 
     companion object {
-        private const val HOLDER_VALIDATION_MESSAGE = "Card holder name cannot be empty and must have length of 3 or more characters."
+        private const val HOLDER_VALIDATION_MESSAGE = "Card holder name cannot be empty and must have length between 3 and 150 characters."
         private const val NUMBER_VALIDATION_MESSAGE = "Card number is not valid."
         private const val CARD_DATE_FORMAT_VALIDATION_MESSAGE = "Date could not be parsed: "
         private const val CARD_DATE_EXPIRED_VALIDATION_MESSAGE = "Card date expired: "

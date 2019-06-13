@@ -6,6 +6,6 @@ import com.wirecard.payment.api.domain.payment.ProcessState
 interface CreditCardGateway {
 
     fun process(request: PaymentRequest): ProcessState
-    fun check(ticket: String): PaymentRequest
+    fun check(request: PaymentRequest): ProcessState
 
 }

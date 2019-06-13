@@ -1,8 +1,6 @@
 package com.wirecard.payment.api.domain.payment
 
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.wirecard.payment.api.domain.Validatable
-import com.wirecard.payment.api.domain.collectViolationsWithoutThrowing
 import com.wirecard.payment.api.domain.exceptions.ValidationException
 import com.wirecard.payment.api.domain.exceptions.Violation
 import java.util.*

@@ -1,11 +1,11 @@
 package com.wirecard.payment.api.domain
 
+import com.wirecard.payment.api.domain.exceptions.PaymentRequestNotFoundException
 import com.wirecard.payment.api.domain.payment.PaymentRequest
-import com.wirecard.payment.api.domain.payment.PaymentType.*
-import org.reactivestreams.Publisher
+import com.wirecard.payment.api.domain.payment.PaymentType.BOLETO
+import com.wirecard.payment.api.domain.payment.PaymentType.CARD
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import reactor.core.publisher.Mono
 
 @Component
 class Payments
@@ -15,20 +15,28 @@ class Payments
         private val repository: PaymentRequestRepository
 ) {
 
-    fun process(request: PaymentRequest): Publisher<PaymentRequest> {
+    fun process(request: PaymentRequest): PaymentRequest {
         request.validate()
 
-        return Mono.just(processPayment(request))
-
-    }
-
-    private fun processPayment(request: PaymentRequest):PaymentRequest {
         when (request.payment.type) {
             BOLETO -> request.payment.boletoNumber = boletoProvider.generateBoletoNumberFor(request)
             CARD -> request.status = creditCardGateway.process(request)
         }
 
         return repository.save(request)
+
+    }
+
+    fun checkState(ticket: String): PaymentRequest {
+        val request = repository.find(ticket)
+                ?: throw PaymentRequestNotFoundException(ticket)
+
+        when (request.payment.type) {
+            CARD -> request.status = creditCardGateway.check(request)
+            BOLETO -> request.status = boletoProvider.check(request)
+        }
+
+        return request
     }
 
 }

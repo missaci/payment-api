@@ -1,13 +1,10 @@
 package com.wirecard.payment.api.domain.payment
 
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.wirecard.payment.api.domain.Validatable
-import com.wirecard.payment.api.domain.collectViolationsWithoutThrowing
 import com.wirecard.payment.api.domain.exceptions.ValidationException
 import com.wirecard.payment.api.domain.exceptions.Violation
 import com.wirecard.payment.api.infrastructure.hasLengthBetween
-import com.wirecard.payment.api.infrastructure.hasMinLengthOf
-import com.wirecard.payment.api.infrastructure.isNumeric
+import com.wirecard.payment.api.infrastructure.isNaturalNumber
 import com.wirecard.payment.api.infrastructure.startsWithOneOf
 
 class Card
@@ -15,7 +12,7 @@ class Card
         val holderName: String,
         val number: String,
         expirationDate: String,
-        val cvv: String
+        val cvv: String? = null
 ) : Validatable {
 
     val expirationDate = CardDate(expirationDate)
@@ -65,20 +62,20 @@ class Card
 
     private fun validateInternalFields(violations: MutableList<Violation>) =
             violations.apply {
-                if (holderName.isNullOrBlank() || !holderName.hasMinLengthOf(3))
-                    add(Violation("Card holder name cannot be empty and must have length of 3 or more characters."))
+                if (holderName.isNullOrBlank() || !holderName.hasLengthBetween(3, 150))
+                    add(Violation("Card holder name cannot be empty and must have length between 3 and 150 characters."))
 
                 if (!isCardNumberValid())
                     add(Violation("Card number is not valid."))
 
-                if (!cvv.hasLengthBetween(3, 4) || !cvv.isNumeric())
+                if (!cvv.hasLengthBetween(3, 4) || !cvv.isNaturalNumber())
                     add(Violation("Invalid cvv format."))
             }
 
     private fun isCardNumberValid(): Boolean {
         val numberToValidate = this.number.replace("[\\s\t-]".toRegex(), "")
 
-        return numberToValidate.isNumeric() &&
+        return numberToValidate.isNaturalNumber() &&
                 numberToValidate.hasLengthBetween(12, 19) &&
                 isValidOnLuhnFormula(numberToValidate)
 

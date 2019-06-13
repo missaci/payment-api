@@ -1,11 +1,10 @@
 package com.wirecard.payment.api.domain.payment
 
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.wirecard.payment.api.domain.Validatable
-import com.wirecard.payment.api.domain.collectViolationsWithoutThrowing
 import com.wirecard.payment.api.domain.exceptions.ValidationException
 import com.wirecard.payment.api.domain.exceptions.Violation
-import com.wirecard.payment.api.infrastructure.hasMinLengthOf
+import com.wirecard.payment.api.infrastructure.hasLengthBetween
+import com.wirecard.payment.api.infrastructure.hasMaxLengthOf
 import com.wirecard.payment.api.infrastructure.isEmail
 
 class Buyer
@@ -22,11 +21,11 @@ class Buyer
 
         violations.addAll(cpf.collectViolationsWithoutThrowing())
 
-        if(name.isBlank() || !name.hasMinLengthOf(3))
-            violations.add(Violation("Buyer's name cannot be empty and must be grater then 3 characters."))
+        if(name.isBlank() || !name.hasLengthBetween(3, 150))
+            violations.add(Violation("Buyer's name cannot be empty and must be grater then 3 and lesser then 150 characters."))
 
-        if(!email.isEmail())
-            violations.add(Violation("E-mail is not valid."))
+        if(!email.isEmail() || !email.hasMaxLengthOf(100))
+            violations.add(Violation("E-mail is not valid. Must has a valid e-mail format and be less then 100 characters."))
 
         if(violations.isNotEmpty()) throw ValidationException(violations)
     }

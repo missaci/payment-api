@@ -1,8 +1,6 @@
 package com.wirecard.payment.api.domain.payment
 
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.wirecard.payment.api.domain.Validatable
-import com.wirecard.payment.api.domain.collectViolationsWithoutThrowing
 import com.wirecard.payment.api.domain.exceptions.ValidationException
 import com.wirecard.payment.api.domain.exceptions.Violation
 
@@ -10,10 +8,9 @@ class Payment
 @JsonCreator constructor(
         val amount: Double,
         val type: PaymentType,
-        val card: Card? = null
+        val card: Card? = null,
+        var boletoNumber:String? = null
 ) : Validatable {
-
-    var boletoNumber:String? = null
 
     override fun validate() {
         val violations = mutableListOf<Violation>()

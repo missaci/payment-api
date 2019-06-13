@@ -3,11 +3,9 @@ package com.wirecard.payment.api.domain
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
-import com.wirecard.payment.api.domain.payment.Buyer
-import com.wirecard.payment.api.domain.payment.Payment
-import com.wirecard.payment.api.domain.payment.PaymentRequest
-import com.wirecard.payment.api.domain.payment.PaymentType
-import org.junit.jupiter.api.Assertions.*
+import com.wirecard.payment.api.domain.payment.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 
 class PaymentsTest {
@@ -26,13 +24,17 @@ class PaymentsTest {
         }
 
         val creditCardGateway = mock<CreditCardGateway> {
-            on { process(any()) } doReturn paymentRequest.ticket
+            on { process(any()) } doReturn ProcessState.PENDING
         }
 
-        val ticket = Payments(boletoProvider, creditCardGateway).process(paymentRequest)
+        val repository = mock<PaymentRequestRepository> {
+            on { save(paymentRequest) } doReturn paymentRequest
+        }
 
-        assertNotNull(ticket)
-        assertEquals("testBoleto", ticket)
+        val request = Payments(boletoProvider, creditCardGateway, repository).process(paymentRequest)
+
+        assertNotNull(request)
+        assertEquals("testBoleto", request.payment.boletoNumber)
 
     }
 
