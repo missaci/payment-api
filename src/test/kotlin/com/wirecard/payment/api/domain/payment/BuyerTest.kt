@@ -153,8 +153,8 @@ class BuyerTest {
     }
 
     companion object {
-        private const val NAME_VALIDATION_MESSAGE = "Buyer's name cannot be empty and must be grater then 3 characters."
-        private const val EMAIL_VALIDATION_MESSAGE = "E-mail is not valid."
+        private const val NAME_VALIDATION_MESSAGE = "Buyer's name cannot be empty and must be grater then 3 and lesser then 150 characters."
+        private const val EMAIL_VALIDATION_MESSAGE = "E-mail is not valid. Must has a valid e-mail format and be less then 100 characters."
         private const val CPF_VALIDATION_MESSAGE = "CPF informed is not valid: "
 
     }

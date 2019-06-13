@@ -1,14 +1,20 @@
 package com.wirecard.payment.api.domain.payment
 
-import com.wirecard.payment.api.domain.Validatable
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import com.wirecard.payment.api.domain.exceptions.ValidationException
 import com.wirecard.payment.api.domain.exceptions.Violation
 import java.util.*
 
+@JsonSerialize(using = ToStringSerializer::class)
 data class CardDate(val value: String) : Validatable {
 
     override fun validate() {
         validateAndParse()
+    }
+
+    override fun toString(): String {
+        return value
     }
 
     fun toDate(): Date {

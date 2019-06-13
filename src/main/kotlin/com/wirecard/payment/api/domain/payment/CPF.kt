@@ -1,20 +1,28 @@
 package com.wirecard.payment.api.domain.payment
 
-import com.wirecard.payment.api.domain.Validatable
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import com.wirecard.payment.api.domain.exceptions.ValidationException
 import com.wirecard.payment.api.domain.exceptions.Violation
-import com.wirecard.payment.api.infrastructure.hasCPFFormat
+import com.wirecard.payment.api.infrastructure.looksLikeACPF
 
+@JsonSerialize(using = ToStringSerializer::class)
 class CPF(val value: String): Validatable {
 
     override fun validate() {
         if( !isValid(value) ) throw ValidationException(listOf(Violation("CPF informed is not valid: $value")))
     }
 
-    private fun isValid(value: String): Boolean {
-        val formattedValue = value.replace("[^0-9]".toRegex(), "")
+    override fun toString(): String {
+        return value
+    }
 
-        if(!value.hasCPFFormat() || areAllDigitsTheSame(formattedValue)) return false
+    fun toOnlyDigits() = value.replace("[^0-9]".toRegex(), "")
+
+    private fun isValid(value: String): Boolean {
+        val formattedValue = toOnlyDigits()
+
+        if(!value.looksLikeACPF() || areAllDigitsTheSame(formattedValue)) return false
 
         val dig10 = digitCalcFor(9, 10, formattedValue)
         val dig11 = digitCalcFor(10, 11, formattedValue)

@@ -1,7 +1,9 @@
 package com.wirecard.payment.api.domain
 
+import com.wirecard.payment.api.domain.exceptions.PaymentRequestNotFoundException
 import com.wirecard.payment.api.domain.payment.PaymentRequest
-import com.wirecard.payment.api.domain.payment.PaymentType
+import com.wirecard.payment.api.domain.payment.PaymentType.BOLETO
+import com.wirecard.payment.api.domain.payment.PaymentType.CARD
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -9,17 +11,32 @@ import org.springframework.stereotype.Component
 class Payments
 @Autowired constructor(
         private val boletoProvider: BoletoProvider,
-        private val creditCardGateway: CreditCardGateway
+        private val creditCardGateway: CreditCardGateway,
+        private val repository: PaymentRequestRepository
 ) {
 
-    fun process(request: PaymentRequest): String {
+    fun process(request: PaymentRequest): PaymentRequest {
         request.validate()
 
-        return when (request.payment.type) {
-            PaymentType.BOLETO -> boletoProvider.generateBoletoNumberFor(request)
-            PaymentType.CARD -> creditCardGateway.process(request)
+        when (request.payment.type) {
+            BOLETO -> request.payment.boletoNumber = boletoProvider.generateBoletoNumberFor(request)
+            CARD -> request.status = creditCardGateway.process(request)
         }
 
+        return repository.save(request)
+
+    }
+
+    fun checkState(ticket: String): PaymentRequest {
+        val request = repository.find(ticket)
+                ?: throw PaymentRequestNotFoundException(ticket)
+
+        when (request.payment.type) {
+            CARD -> request.status = creditCardGateway.check(request)
+            BOLETO -> request.status = boletoProvider.check(request)
+        }
+
+        return request
     }
 
 }
