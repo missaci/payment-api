@@ -4,6 +4,7 @@ import com.wirecard.payment.api.domain.PaymentRequestRepository
 import com.wirecard.payment.api.domain.payment.*
 import com.wirecard.payment.api.infrastructure.format
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -15,15 +16,20 @@ class H2PaymentRequestRepository
 
 
     override fun find(ticket: String): PaymentRequest? {
-        return jdbc.queryForObject("select " +
-                "ticket, client_id, status, " +
-                "buyer_name, buyer_email, " +
-                "buyer_cpf, amount, type, " +
-                "boleto_num, card_holder, card_number, " +
-                "card_expiration from payments " +
-                "where ticket = ?",
-                arrayOf(ticket),
-                this.mapper())
+        return try {
+            jdbc.queryForObject("select " +
+                    "ticket, client_id, status, " +
+                    "buyer_name, buyer_email, " +
+                    "buyer_cpf, amount, type, " +
+                    "boleto_num, card_holder, card_number, " +
+                    "card_expiration from payments " +
+                    "where ticket = ?",
+                    arrayOf(ticket),
+                    this.mapper())
+
+        } catch (empty: EmptyResultDataAccessException) {
+            null
+        }
     }
 
 
