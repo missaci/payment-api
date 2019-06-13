@@ -13,6 +13,8 @@ class Payment
         val card: Card? = null
 ) : Validatable {
 
+    var boletoNumber:String? = null
+
     override fun validate() {
         val violations = mutableListOf<Violation>()
 

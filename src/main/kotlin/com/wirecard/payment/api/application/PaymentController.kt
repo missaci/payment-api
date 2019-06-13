@@ -15,6 +15,6 @@ class PaymentController
 
     @PostMapping
     fun create(request: PaymentRequest) =
-            payments.process(request).toMono()
+            payments.process(request)
 
 }
