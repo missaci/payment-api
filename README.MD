@@ -22,7 +22,7 @@ This is done using an internal function called *defer*.
 
 The internal processes are executed by just two internal threads. It was done this way thinking about using really small
 machines on a cloud environment, and this solution already showed efficiency on environments like that (but it is just
-a starting point. No load tests wore done on this app, and maybe other approaches can bring better results)
+a starting point. No load tests were done on this app, and maybe other approaches can bring better results).
 
 ### Stack
 
