@@ -10,12 +10,12 @@ providers for those services.
 This code was developed based on some principles of DDD and 
 hexagonal architecture, so we have basically 3 main structural divisions: 
 
-- Application -> it is basically a layer that offers a way for external applications and services to interact with this app.
-May provide some decoration on the results presented, since some information from domain may not be exposed
-- Domain -> is where the business intelligence of this application is concentrated. This domain is exposed trough the Payments
+- Application -> is a layer that offers a way for external applications and services to interact with this app.
+May provide some decoration on the results presented, since some information from domain may not be exposed.
+- Domain -> where the business intelligence of this application is concentrated. This domain is exposed through the Payments
 class, that can express in a easy way what actions are available in this domain.
-- Infrastructure -> is where infrastructure code is present (like string utilities or logic really specific to 
-infrastructure intelligence,like queries for a specific database or ways to interact with the file system). 
+- Infrastructure -> where infrastructure code is present (like string utilities or logic really specific to 
+infrastructure intelligence, like queries for a specific database or ways to interact with the file system). 
  
 To avoid http request threads being blocked during internal processes, a deferred result is returned during controller calls.
 This is done using an internal function called *defer*.
