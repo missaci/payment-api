@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:h2:${H2_DB_LOCATION};AUTO_RECONNECT=TRUE;SCHEMA=payments
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    platform: h2
+
+  h2:
+    console:
+      enabled: false
+
+  jackson:
+    default-property-inclusion: non_null

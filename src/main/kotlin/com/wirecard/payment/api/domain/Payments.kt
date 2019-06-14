@@ -1,7 +1,10 @@
 package com.wirecard.payment.api.domain
 
 import com.wirecard.payment.api.domain.exceptions.PaymentRequestNotFoundException
+import com.wirecard.payment.api.domain.payment.BoletoProvider
+import com.wirecard.payment.api.domain.payment.CreditCardGateway
 import com.wirecard.payment.api.domain.payment.PaymentRequest
+import com.wirecard.payment.api.domain.payment.PaymentRequestRepository
 import com.wirecard.payment.api.domain.payment.PaymentType.BOLETO
 import com.wirecard.payment.api.domain.payment.PaymentType.CARD
 import org.springframework.beans.factory.annotation.Autowired

@@ -1,4 +1,4 @@
-package com.wirecard.payment.api.domain
+package com.wirecard.payment.api.domain.payment
 
 import com.wirecard.payment.api.domain.payment.PaymentRequest
 import com.wirecard.payment.api.domain.payment.ProcessState

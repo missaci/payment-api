@@ -1,6 +1,6 @@
 package com.wirecard.payment.api.infrastructure.repositories.h2
 
-import com.wirecard.payment.api.domain.PaymentRequestRepository
+import com.wirecard.payment.api.domain.payment.PaymentRequestRepository
 import com.wirecard.payment.api.domain.payment.*
 import com.wirecard.payment.api.infrastructure.format
 import org.springframework.beans.factory.annotation.Autowired

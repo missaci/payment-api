@@ -1,0 +1,15 @@
+## Curl examples
+
+# Creates a BOLETO Payment Request
+curl -X POST "http://localhost:8080/payments" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"clientId\": 2, \"buyer\": { \"name\": \"Mateus Missaci\", \"email\": \"mateus@gmail.com\", \"cpf\": \"081.356.740-82\" }, \"payment\": { \"amount\": 150.00, \"type\": \"BOLETO\" }}"
+
+# Creates a Card Payment Request
+curl -X POST "http://localhost:8080/payments" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"clientId\": 2, \"buyer\": { \"name\": \"Mateus Missaci\", \"email\": \"mateus@gmail.com\", \"cpf\": \"081.356.740-82\" }, \"payment\": { \"amount\": 150.00, \"type\": \"CARD\", \"card\": { \"holderName\": \"Mateus Missaci\", \"number\": \"5488 2607 0588 0201\", \"expirationDate\": \"10/20\", \"cvv\": \"123\" } }}"
+
+# Check the status of a payment request (replace {ticket} with a ticket retrieved by the calls above)
+# Example ticket = eed9105f-d99f-4d7c-aef7-d388284cd364
+curl -X GET "http://localhost:8080/payments/{ticket}" -H "accept: */*"
+
+# Card Validation
+curl -X POST "http://localhost:8080/validation/card" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"holderName\": \"Mateus Missaci\", \"number\": \"5488 2607 0588 0201\", \"expirationDate\": \"10/20\", \"cvv\": \"123\"}"
+

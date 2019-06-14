@@ -1,6 +1,7 @@
 package com.wirecard.payment.api.infrastructure
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class StringExtensionsTest {
@@ -88,6 +89,14 @@ class StringExtensionsTest {
     fun `should identify as false when a null string is checked with startsWithOneOf function`() {
         assertFalse((null as String?).startsWithOneOf("a", "N", "n"))
         assertFalse((null as String?).startsWithOneOf(0..2))
+    }
+
+    @Test
+    fun `should identify a string looks like a CPF`() {
+        assertTrue("081.356.740-82".looksLikeACPF())
+        assertTrue("08135674082".looksLikeACPF())
+        assertFalse("081.356.740/82".looksLikeACPF())
+        assertFalse((null as String?).looksLikeACPF())
     }
 
 }

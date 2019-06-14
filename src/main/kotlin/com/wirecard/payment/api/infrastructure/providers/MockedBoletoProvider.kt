@@ -1,6 +1,6 @@
 package com.wirecard.payment.api.infrastructure.providers
 
-import com.wirecard.payment.api.domain.BoletoProvider
+import com.wirecard.payment.api.domain.payment.BoletoProvider
 import com.wirecard.payment.api.domain.payment.PaymentRequest
 import com.wirecard.payment.api.domain.payment.ProcessState
 import org.springframework.stereotype.Component

@@ -26,7 +26,7 @@ class Card
         if (violations.isNotEmpty()) throw ValidationException(violations)
     }
 
-    fun getIssuer(): String {
+    fun identifyIssuer(): String {
         val number = this.number.replace("[\\s\t-]".toRegex(), "")
 
         return when {

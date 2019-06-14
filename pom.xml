@@ -17,6 +17,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<kotlin.version>1.2.71</kotlin.version>
+		<swagger.version>2.9.2</swagger.version>
 		<base.dir>${project.basedir}</base.dir>
 	</properties>
 
@@ -33,12 +34,36 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<!-- Exclude the Tomcat dependency -->
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Use Undertow instead -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-undertow</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
+		</dependency>
+
+		<!-- Swagger -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
 		</dependency>
 
 		<!-- Kotlin related Dependencies -->
@@ -104,6 +129,10 @@
 		<testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
 		<resources>
 			<resource>
+				<directory>${dir.config.resources}</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
@@ -144,5 +173,23 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<dir.config.resources>src/main/resources/production</dir.config.resources>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<dir.config.resources>src/main/resources/development</dir.config.resources>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
 
 </project>
